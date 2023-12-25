@@ -8,8 +8,8 @@ export class UserFactoryService {
     const newUser = new User();
     newUser.username = createUserDto.username;
     newUser.password = createUserDto.password;
-    newUser.firstName = createUserDto.firstName;
-    newUser.lastName = createUserDto.lastName;
+    newUser.firstname = createUserDto.firstname;
+    newUser.lastname = createUserDto.lastname;
     newUser.phone = createUserDto.phone;
     newUser.email = createUserDto.email;
     newUser.role = createUserDto.role;
@@ -20,8 +20,8 @@ export class UserFactoryService {
     const newUser = new User();
     newUser.username = updateUserDto.username;
     newUser.password = updateUserDto.password;
-    newUser.firstName = updateUserDto.firstName;
-    newUser.lastName = updateUserDto.lastName;
+    newUser.firstname = updateUserDto.firstname;
+    newUser.lastname = updateUserDto.lastname;
     newUser.phone = updateUserDto.phone;
     newUser.email = updateUserDto.email;
     newUser.role = updateUserDto.role;
