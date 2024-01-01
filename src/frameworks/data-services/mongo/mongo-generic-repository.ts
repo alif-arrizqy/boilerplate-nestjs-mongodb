@@ -18,6 +18,10 @@ export class MongoGenericRepository<T> implements AbsGenericRepository<T> {
     return this._repository.findById(id).exec();
   }
 
+  getOneByQuery(query: any): Promise<T> {
+    return this._repository.findOne(query).exec();
+  }
+
   create(item: T): Promise<T> {
     return this._repository.create(item);
   }
