@@ -10,25 +10,87 @@ export class UserUseCases {
     private userFactoryService: UserFactoryService,
   ) {}
 
-  getAllUsers(): Promise<User[]> {
-    return this.dataServices.users.getAll();
+  async getAllUsers(): Promise<{
+    statusCode: number;
+    message: string;
+    data: User[];
+  }> {
+    const isExist = await this.dataServices.users.getAll();
+    if (isExist.length > 0) {
+      return {
+        statusCode: 200,
+        message: 'Users fetched successfully',
+        data: isExist,
+      };
+    }
   }
 
-  getUserById(id: any): Promise<User> {
-    return this.dataServices.users.get(id);
+  async getUserById(
+    id: any,
+  ): Promise<{ statusCode: number; message: string; data: User }> {
+    const isExist = await this.dataServices.users.get(id);
+    if (isExist === null) {
+      return {
+        statusCode: 404,
+        message: 'User not found',
+        data: isExist,
+      };
+    } else {
+      return {
+        statusCode: 200,
+        message: 'User fetched successfully',
+        data: isExist,
+      };
+    }
   }
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(
+    createUserDto: CreateUserDto,
+  ): Promise<{ statusCode: number; message: string; data: User }> {
     const user = this.userFactoryService.createNewUser(createUserDto);
-    return this.dataServices.users.create(user);
+    const newUser = await this.dataServices.users.create(user);
+    return {
+      statusCode: 201,
+      message: 'User created successfully',
+      data: newUser,
+    };
   }
 
-  updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<{ statusCode: number; message: string; data: User }> {
     const user = this.userFactoryService.updateUser(updateUserDto);
-    return this.dataServices.users.update(userId, user);
+    const updatedUser = await this.dataServices.users.update(userId, user);
+    if (updatedUser === null) {
+      return {
+        statusCode: 404,
+        message: 'User not found',
+        data: updatedUser,
+      };
+    } else {
+      return {
+        statusCode: 200,
+        message: 'User updated successfully',
+        data: user,
+      };
+    }
   }
 
-  deleteUser(userId: string): Promise<User> {
-    return this.dataServices.users.delete(userId);
+  async deleteUser(
+    userId: string,
+  ): Promise<{ statusCode: number; message: string }> {
+    const deletedUser = await this.dataServices.users.delete(userId);
+    if (deletedUser === null) {
+      return {
+        statusCode: 404,
+        message: 'User not found',
+      };
+    } else {
+      return {
+        statusCode: 200,
+        message: 'User deleted successfully',
+      };
+    }
   }
 }
